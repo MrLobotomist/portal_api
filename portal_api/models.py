@@ -35,14 +35,3 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
-
-
-# class (models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='news')
-#     title = models.CharField(max_length=255)
-#     content = models.TextField()
-#     published_date = models.DateTimeField(auto_now_add=True)
-#     image = models.ImageField(upload_to="news_images/", null=True, blank=True)
-#
-#     def __str__(self):
-#         return self.title

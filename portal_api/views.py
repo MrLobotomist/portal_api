@@ -19,7 +19,7 @@ class NewsViewSet(viewsets.ModelViewSet):
     serializer_class = NewsSerializer
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = NewsFilter
-    ordering_fields = ['title', 'published_date', 'author']
+    ordering_fields = ['title', 'published_date']
 
     def create(self, request, *args, **kwargs):
         if (request.user.groups.filter(name='portal_admin').exists() or
