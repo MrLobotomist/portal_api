@@ -1,12 +1,38 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User, Group
-from .models import News
+
+from .models import News, UserProfile
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = News
-        fields = ['id', 'title', 'content', 'published_date']
+        fields = '__all__'
+
+    def get_author(self, obj):
+        if obj.user is not None:
+            data = obj.user.profile
+            return f"{data.surname} {data.name} {data.patronymic}"
+        return None
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    # full_name = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+    # def get_full_name(self, obj):
+    #     return f"{obj.surname} {obj.name} {obj.patronymic}"
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,7 +41,8 @@ class UserSerializer(serializers.ModelSerializer):
         slug_field='name',
         queryset=Group.objects.all()
     )
+    profile = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'groups']
+        fields = ['id', 'username', 'email', 'groups', 'profile']

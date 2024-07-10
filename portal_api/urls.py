@@ -1,6 +1,4 @@
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from portal_api.views import *
 from rest_framework_simplejwt.views import (
@@ -11,6 +9,7 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register(r'news', NewsViewSet)
 router.register(r'users', UserViewSet)
+router.register(r'profile', UserProfileViewSet)
 router.register(r'groups', GroupViewSet)
 
 urlpatterns = [
@@ -19,4 +18,4 @@ urlpatterns = [
     path('', include(router.urls)),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

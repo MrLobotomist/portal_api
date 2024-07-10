@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "bff761e6-7885-45ce-a38e-aaceca2f7b9a",
+		"_postman_id": "60872aa9-71ff-423a-8379-816d4cd78529",
 		"name": "Portal",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30486317"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -67,7 +66,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/news/?page_size=5",
+					"raw": "{{base_url}}/news/?page_size=5&ordering=author",
 					"host": [
 						"{{base_url}}"
 					],
@@ -79,6 +78,10 @@
 						{
 							"key": "page_size",
 							"value": "5"
+						},
+						{
+							"key": "ordering",
+							"value": "author"
 						}
 					]
 				}
@@ -91,13 +94,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/news/26/",
+					"raw": "{{base_url}}/news/29/",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"news",
-						"26",
+						"29",
 						""
 					]
 				}
@@ -129,8 +132,24 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Новость 5\",\r\n    \"content\": \"1\"\r\n}",
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Новость 5",
+							"type": "default"
+						},
+						{
+							"key": "content",
+							"value": "Описание новости",
+							"type": "default"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/main.ecp/z00930/test/3b89871c1e11745b5d21697f74d5c4b2.jpg"
+						}
+					],
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,6 +163,50 @@
 					],
 					"path": [
 						"news",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News PATCH",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Неновость",
+							"type": "default"
+						},
+						{
+							"key": "content",
+							"value": "Описание новости",
+							"type": "default"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/main.ecp/z00930/test/3b89871c1e11745b5d21697f74d5c4b2.jpg"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/news/2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"news",
+						"2",
 						""
 					]
 				}
@@ -169,13 +232,59 @@
 			"response": []
 		},
 		{
+			"name": "Users GET By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users/2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users CREATE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"third\",\n    \"groups\": [\"portal_reader\"],\n    \"email\": \"third@ya.ru\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Users PATH",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"groups\": [\"portal_writer\"]\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@django.com\",\r\n    \"groups\": [\r\n        \"portal_writer\",\r\n        \"portal_admin\"\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -195,6 +304,150 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "UserProfile CREATE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": 2,\n    \"name\": \"Павел\",\n    \"surname\": \"Смехов\",\n    \"patronymic\": \"Александрович\",\n    \"date_of_birth\": \"1995-07-12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profile/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserProfile PATCH",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Павел\",\n    \"surname\": \"Смехов\",\n    \"patronymic\": \"Александрович\",\n    \"date_of_birth\": \"1995-07-12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profile/2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserProfile GET",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": 2,\n    \"name\": \"Павел\",\n    \"surname\": \"Смехов\",\n    \"patronymic\": \"Александрович\",\n    \"date_of_birth\": \"1995-07-12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profile/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserProfile GET By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": 2,\n    \"name\": \"Павел\",\n    \"surname\": \"Смехов\",\n    \"patronymic\": \"Александрович\",\n    \"date_of_birth\": \"1995-07-12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profile/2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserProfile DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profile/2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -202,7 +455,7 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNjMyMzMyLCJpYXQiOjE3MjA1NDU5MzIsImp0aSI6IjNjY2M0MmYxZDFiNDQ0ZTM4OTgxZWRlZjlkZDFhY2Y5IiwidXNlcl9pZCI6MX0.J4gDqpC40JBGblbYcxHUm5zlq-b3uIRaAapkEMq1T4U",
+				"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNjgwMzM4LCJpYXQiOjE3MjA1OTM5MzgsImp0aSI6ImRmYzg3NmE3ZWI5ZjRjYzZhYTJlZDgxOTIzNzI3OTczIiwidXNlcl9pZCI6MX0.0ZEZHKI4n6Tmh2oep9bt5so4HTFD9SCFpaz2OUF3TVU",
 				"type": "string"
 			},
 			{
@@ -217,7 +470,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -227,7 +479,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
