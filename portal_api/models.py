@@ -35,3 +35,17 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ViewNews(models.Model):
+    id = models.IntegerField(primary_key=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    image = models.CharField(max_length=100, blank=True, null=True)
+    user_id = models.IntegerField(blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
+    author = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'view_news'

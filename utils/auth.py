@@ -34,9 +34,6 @@ class DisableCSRFMiddleware(object):
 
 
 class SetUserInfo(MiddlewareMixin):
-    """
-    Устанавливаем negotiate в сессию
-    """
     groups = []
     account_name = ''
     access_token = ''
@@ -57,25 +54,11 @@ class SetUserInfo(MiddlewareMixin):
         try:
             auth_type, token = auth_header.split(' ')
         except:
-            auth_type = False
+            auth_type, token = False, ''
         if values is None:
             # Попытка получения из jwt
             if auth_header:
-                try:
-                    auth_type, token = auth_header.split(' ')
-                    if auth_type == 'Bearer':
-                        jwt_auth = JWTAuthentication()
-                        validated_token = jwt_auth.get_validated_token(token)
-                        account = jwt_auth.get_user(validated_token)
-                        if request.user != account:
-                            self.account_name = account.username
-                            self.groups = [group.name for group in account.groups.all()]
-                            self.access_token = token
-                            request.session['UserInfo'] = self.__repr__()
-                            request.user = account
-                except (InvalidToken, TokenError, ValueError):
-                    request.user = None
-                    return
+                self.get_credentials_from_jwt(request, auth_header)
             else:
                 self.account_name = getpass.getuser().split('@')[0]
                 user, created = User.objects.get_or_create(username=self.account_name)
@@ -90,7 +73,24 @@ class SetUserInfo(MiddlewareMixin):
                 # сохраняем в сессию значения
                 request.session['UserInfo'] = self.__repr__()
         elif self.access_token != token:
-            pass
+            self.get_credentials_from_jwt(request, auth_header)
+
+    def get_credentials_from_jwt(self, request, auth_header):
+        try:
+            auth_type, token = auth_header.split(' ')
+            if auth_type == 'Bearer':
+                jwt_auth = JWTAuthentication()
+                validated_token = jwt_auth.get_validated_token(token)
+                account = jwt_auth.get_user(validated_token)
+                if request.user != account:
+                    self.account_name = account.username
+                    self.groups = [group.name for group in account.groups.all()]
+                    self.access_token = token
+                    request.session['UserInfo'] = self.__repr__()
+                    request.user = account
+        except (InvalidToken, TokenError, ValueError):
+            request.user = None
+            return
 
     def __repr__(self):
         # вывод данных объекта, для последующего воспроизведения

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User, Group
 
-from .models import News, UserProfile
+from .models import News, UserProfile, ViewNews
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -46,3 +46,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'groups', 'profile']
+
+
+class NewsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ViewNews
+        fields = '__all__'

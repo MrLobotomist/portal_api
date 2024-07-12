@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from portal_api.api_views.auth import LocalAuth
 from portal_api.api_views.news import NewsViewSet
+from portal_api.api_views.news_view import NewsListView
 from portal_api.api_views.user import UserViewSet
 from portal_api.api_views.user_profile import UserProfileViewSet
 from portal_api.views import *
@@ -15,6 +16,7 @@ router.register(r'news', NewsViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'profile', UserProfileViewSet)
 router.register(r'groups', GroupViewSet)
+router.register(r'news_list', NewsListView)
 
 urlpatterns = [
     path('auth/', LocalAuth.as_view(), name='local_auth'),

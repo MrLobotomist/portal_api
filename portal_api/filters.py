@@ -1,23 +1,27 @@
 from django.db.models import Q
 from django_filters import rest_framework as filters
 
-from portal_api.models import News
+from portal_api.models import News, ViewNews
 
 
 class NewsFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
     date_gt = filters.DateTimeFilter(field_name='published_date', lookup_expr='gte')
     date_lt = filters.DateTimeFilter(field_name='published_date', lookup_expr='lte')
-    author = filters.CharFilter(method='filter_by_author_full_name')
 
     class Meta:
         model = News
-        fields = ['title', 'date_gt', 'date_lt', 'published_date', 'author']
+        fields = ['title', 'date_gt', 'date_lt', 'published_date']
 
-    # Фильтрация по автору
-    def filter_by_author_full_name(self, queryset, name, value):
-        return queryset.filter(
-            Q(user__profile__name__icontains=value) |
-            Q(user__profile__surname__icontains=value) |
-            Q(user__profile__patronymic__icontains=value)
-        )
+
+# filterset_fields = ['title', 'user_id', 'published_date', 'author']
+class NewsListFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains')
+    date_gt = filters.DateTimeFilter(field_name='published_date', lookup_expr='gte')
+    date_lt = filters.DateTimeFilter(field_name='published_date', lookup_expr='lte')
+    author = filters.CharFilter(lookup_expr='icontains')
+    user_id = filters.NumberFilter(lookup_expr='exact')
+
+    class Meta:
+        model = ViewNews
+        fields = ['title', 'date_gt', 'date_lt', 'published_date', 'author']
