@@ -51,18 +51,19 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'utils.auth.DisableCSRFMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'utils.auth.SetUserInfo',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# DRF SETTINGS TODO change
+# DRF SETTINGS
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'portal_api.authentication.KerberosAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -77,11 +78,31 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+# настройки кэша в памяти
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'app-unique-cache'
+    }
+}
+
+# настройки поведения данных сессий
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 # Папка с изображениями
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ROOT_URLCONF = 'main.urls'
+
+# Создаем неизвестных юзеров или нет
+CREATE_UNKNOWN_USER = True
+
+# Отключение обновления последнего логина
+NO_UPDATE_LAST_LOGIN = True
+
+# Точка для получения данных Negotiate
+KERB_REALM = 'HTTP@ecp-webdev1.main.ecp'
 
 TEMPLATES = [
     {
