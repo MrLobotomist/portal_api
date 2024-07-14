@@ -17,8 +17,9 @@ class NewsFilter(filters.FilterSet):
 # filterset_fields = ['title', 'user_id', 'published_date', 'author']
 class NewsListFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
-    date_gt = filters.DateTimeFilter(field_name='published_date', lookup_expr='gte')
-    date_lt = filters.DateTimeFilter(field_name='published_date', lookup_expr='lte')
+    date_gt = filters.DateFilter(field_name='published_date', lookup_expr='gte')
+    date_lt = filters.DateFilter(field_name='published_date', lookup_expr='lte')
+    published_date = filters.DateFilter(field_name='published_date', lookup_expr='lte')
     author = filters.CharFilter(lookup_expr='icontains')
     user_id = filters.NumberFilter(lookup_expr='exact')
 

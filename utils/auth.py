@@ -77,6 +77,9 @@ class SetUserInfo(MiddlewareMixin):
 
     def get_credentials_from_jwt(self, request, auth_header):
         try:
+            if auth_header is None:
+                request.user = None
+                return
             auth_type, token = auth_header.split(' ')
             if auth_type == 'Bearer':
                 jwt_auth = JWTAuthentication()
