@@ -17,7 +17,6 @@ from corsheaders.defaults import default_headers
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -38,20 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
     'portal_api',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'utils.cors.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'utils.auth.DisableCSRFMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'utils.auth.SetUserInfo',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -149,10 +149,18 @@ LOGGING = {
     },
 }
 
-
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = default_headers + ('Content-Disposition',)
-CORS_EXPOSE_HEADERS = ['*']
+# CORS_ALLOW_ALL_ORIGINS = True
+# Указание конкретных хостов для разрешения CORS
+# CORS_ALLOWED_ORIGINS = [
+#     'http://devel.vozduh.keenetic.link',
+#     'http://node.vozduh.keenetic.link',
+#     'http://localhost:8000',
+# ]
+# CORS_ALLOW_HEADERS = list(default_headers) + [
+#     'Authorization',
+#     'Сontent-Disposition',
+# ]
+# CORS_EXPOSE_HEADERS = ['Content-Disposition']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
