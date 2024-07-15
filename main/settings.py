@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,9 +28,6 @@ SECRET_KEY = 'django-insecure-9o2rzkgo$@)17$qe9t_z-_3k8%g*9rd5d&1kqz@_kn4-vzg5t#
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-CORS_ORIGIN_ALLOW_ALL = True
-
 
 # Application definition
 
@@ -150,6 +148,11 @@ LOGGING = {
         },
     },
 }
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = default_headers + ('Content-Disposition',)
+CORS_EXPOSE_HEADERS = ['*']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
