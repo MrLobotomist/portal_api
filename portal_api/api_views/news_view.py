@@ -9,7 +9,7 @@ from portal_api.serializers import NewsListSerializer
 
 
 class NewsListView(viewsets.ReadOnlyModelViewSet):
-    queryset = ViewNews.objects.all()
+    queryset = ViewNews.objects.all().order_by('-published_date')
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
     serializer_class = NewsListSerializer

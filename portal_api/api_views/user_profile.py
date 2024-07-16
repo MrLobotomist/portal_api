@@ -1,3 +1,4 @@
+import json
 from functools import wraps
 
 from django.utils.decorators import method_decorator
@@ -67,6 +68,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     @method_decorator(upd_and_del_check())
     def update(self, request, *args, **kwargs):
+        print(request.data)
         return super().update(request, *args, **kwargs)
 
     @method_decorator(upd_and_del_check())

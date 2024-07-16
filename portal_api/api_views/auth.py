@@ -20,4 +20,5 @@ class LocalAuth(APIView):
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'id': user.id,
         })
