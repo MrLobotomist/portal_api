@@ -8,8 +8,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from portal_api.api_views.common_decorators.only_admin import only_admin_check
+from portal_api.filters import UsersFilter
 from portal_api.models import CustomPagination
 from portal_api.serializers import UserSerializer
+from django_filters import rest_framework as filters
+from rest_framework.filters import OrderingFilter
 
 
 def change_user_check():
@@ -20,8 +23,8 @@ def change_user_check():
             set1, set2 = set(user['groups']), {'portal_admin'}
             if len(set1.intersection(set2)) == 0 and request.user.id != int(kwargs['pk']):
                 raise PermissionDenied('Недостаточно прав')
-            elif len(set1.intersection(set2)) == 0 and 'groups' in request.data:
-                raise PermissionDenied('Недостаточно прав на изменение прав)')
+            # elif len(set1.intersection(set2)) == 0 and 'groups' in request.data:
+            #     raise PermissionDenied('Недостаточно прав на изменение прав)')
             return func(request, *args, **kwargs)
 
         return wrapper
@@ -38,7 +41,6 @@ def only_admin_and_user():
         def wrapper(request, *args, **kwargs):
             user = eval(request.session.get('UserInfo'))
             set1, set2 = set(user['groups']), {'portal_admin'}
-            print(kwargs)
             if len(set1.intersection(set2)) == 0 and request.user.id != int(kwargs['pk']):
                 raise PermissionDenied('Недостаточно прав')
             return func(request, *args, **kwargs)
@@ -54,6 +56,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filterset_class = UsersFilter
+    ordering_fields = ['id', 'email', 'profile_surname', 'profile_company']
 
     @method_decorator(only_admin_check())
     def create(self, request, *args, **kwargs):

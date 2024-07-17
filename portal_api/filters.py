@@ -2,6 +2,7 @@ from django.db.models import Q
 from django_filters import rest_framework as filters
 
 from portal_api.models import News, ViewNews
+from django.contrib.auth.models import User
 
 
 class NewsFilter(filters.FilterSet):
@@ -26,3 +27,19 @@ class NewsListFilter(filters.FilterSet):
     class Meta:
         model = ViewNews
         fields = ['title', 'date_gt', 'date_lt', 'published_date', 'author']
+
+
+class UsersFilter(filters.FilterSet):
+    id = filters.NumberFilter(lookup_expr='exact')
+    email = filters.CharFilter(lookup_expr='icontains')
+    groups = filters.CharFilter(field_name='groups__name', lookup_expr='icontains')
+    company = filters.CharFilter(field_name='profile__company', lookup_expr='icontains')
+    surname = filters.CharFilter(field_name='profile__surname', lookup_expr='icontains')
+    name = filters.CharFilter(field_name='profile__name', lookup_expr='icontains')
+    patronymic = filters.CharFilter(field_name='profile__patronymic', lookup_expr='icontains')
+    date_of_birth = filters.DateFilter(field_name='profile__date_of_birth', lookup_expr='icontains')
+
+
+    class Meta:
+        model = User
+        fields = ['id', 'email']
