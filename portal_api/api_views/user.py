@@ -58,8 +58,7 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = UsersFilter
-    ordering_fields = ['id', 'email', 'profile_surname', 'profile_company']
-
+    ordering_fields = ['id', 'email', 'groups', 'profile__surname', 'profile__name', 'profile__patronymic']
     @method_decorator(only_admin_check())
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

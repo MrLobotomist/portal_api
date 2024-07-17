@@ -25,14 +25,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    # full_name = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = UserProfile
         fields = '__all__'
-
-    # def get_full_name(self, obj):
-    #     return f"{obj.surname} {obj.name} {obj.patronymic}"
 
 
 class UserSerializer(serializers.ModelSerializer):
